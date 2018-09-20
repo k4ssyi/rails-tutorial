@@ -55,12 +55,22 @@ class UsersControllerTest < ActionDispatch::IntegrationTest
     assert_redirected_to root_url
   end
   
-    test "should redirect destroy for wrong micropost" do
+  test "should redirect destroy for wrong micropost" do
     log_in_as(users(:michael))
     micropost = microposts(:ants)
     assert_no_difference 'Micropost.count' do
       delete micropost_path(micropost)
     end
     assert_redirected_to root_url
+  end
+  
+  test "should redirect following when not logged in" do
+    get following_user_path(@user)
+    assert_redirected_to login_url
+  end
+
+  test "should redirect followers when not logged in" do
+    get followers_user_path(@user)
+    assert_redirected_to login_url
   end
 end
